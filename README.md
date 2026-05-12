@@ -1,5 +1,4 @@
-
-markdown# Esoteric D-07X Linux USB Audio 修正
+# Esoteric D-07X Linux USB Audio 修正
 
 Esoteric D-07X DACをLinux（moOde Audio Player）でUSB接続する際、USB High Speed アシンクロナスモード（HS_2）を使用するために必要なカーネルモジュールの修正手順です。
 
