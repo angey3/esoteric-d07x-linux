@@ -185,9 +185,10 @@ grep -n "D-07X" sound/usb/quirks.c
 ```
 
 以下のように2行表示されれば正常です：
-1953:     ep->chip->usb_id == USB_ID(0x0644, 0x802c) ||  /* Esoteric D-07X /
-2220: DEVICE_FLG(0x0644, 0x802c, / Esoteric D-07X */
-
+```
+1953:     ep->chip->usb_id == USB_ID(0x0644, 0x802c) ||  /* Esoteric D-07X */
+2220: DEVICE_FLG(0x0644, 0x802c, /* Esoteric D-07X */
+```
 ### 6. clock.cの修正
 
 ```bash
@@ -247,7 +248,10 @@ make -C /usr/src/linux-headers-6.12.75+rpt-rpi-2712 M=$(pwd)/sound/usb modules 2
 ```
 
 最後の行に以下のように表示されれば成功です：
+
+```
 make: Leaving directory '/usr/src/linux-headers-6.12.75+rpt-rpi-xxxx'
+```
 
 ### 9. インストール
 
@@ -304,7 +308,9 @@ aplay -l | grep ESOTERIC
 ```
 
 以下のように表示されれば正常です：
+```
 card X: DEVICE [ESOTERIC USB AUDIO DEVICE], device 0: USB Audio [USB Audio]
+```
 
 再生中に転送周波数を確認します（96kHz再生時の例）：
 
@@ -323,7 +329,9 @@ sudo nano /etc/udev/rules.d/99-usb-autosuspend.rules
 ```
 
 以下の内容を入力して保存します：
+```
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0644", ATTR{idProduct}=="802c", ATTR{power/control}="on"
+```
 
 `Ctrl+O` → Enter → `Ctrl+X` で保存後、設定を反映します：
 
@@ -336,7 +344,7 @@ sudo udevadm trigger
 
 ## テスト結果
 
-以下の環境で全サンプリングレートの24時間連続再生テストを実施し、正常動作を確認しました。
+以下のように、著者環境にて全サンプリングレートの24時間連続再生テストを実施し、正常動作を確認しました。
 
 ※転送周波数の表記は測定中に観測された最小値/最大値です。目標値より若干高めになるのはASYNCモードの正常な動作です。
 
@@ -382,7 +390,7 @@ uname -r
 
 ### .xz圧縮ファイルの削除について
 
-Raspberry Pi OSではカーネルモジュールの圧縮版（`.ko.xz`）が優先されてロードされます。インストール時に必ず削除してください。削除しないと修正が反映されません。
+Raspberry Pi OSではカーネルモジュールの圧縮版（`.ko.xz`）が優先されてロードされます。インストール時に必ず削除してください。削除しないと修正が反映されません。カーネルアップデート後の再ビルド時も同様に削除が必要です。
 
 ### D-07X本体の設定について
 
